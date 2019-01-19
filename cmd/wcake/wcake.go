@@ -64,6 +64,7 @@ func main() {
 	e.GET("/getstore", h.GetStore)
 	e.GET("/uploadstore", h.UploadStore)
 	e.POST("/buy", h.Buy)
+	e.GET("/buyid", h.GetBuyID)
 	e.Logger.Fatal(e.Start(":8000"))
 
 	glog.Flush()
