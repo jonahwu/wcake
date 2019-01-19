@@ -357,6 +357,12 @@
 			"revisionTime": "2019-01-17T18:46:57Z"
 		},
 		{
+			"checksumSHA1": "tx9GWP4+3YpELpR7YgZh9Ld2LBk=",
+			"path": "github.com/satori/go.uuid",
+			"revision": "b2ce2384e17bbe0c6d34077efa39dbab3e09123b",
+			"revisionTime": "2018-10-28T12:50:25Z"
+		},
+		{
 			"checksumSHA1": "91EF2w3kYGxg2Hzsp0SM6mxGRvc=",
 			"path": "github.com/sirupsen/logrus",
 			"revision": "659e47340eafb203ad3c2ce461023fde46356615",
@@ -403,6 +409,18 @@
 			"path": "github.com/stretchr/testify/suite",
 			"revision": "363ebb24d041ccea8068222281c2e963e997b9dc",
 			"revisionTime": "2019-01-09T08:30:14Z"
+		},
+		{
+			"checksumSHA1": "q7HbRwO5KoN56adODC4o7zxLXHU=",
+			"path": "github.com/tidwall/gjson",
+			"revision": "5a96cfda705e1762dc0671e26b0b78925ad97e29",
+			"revisionTime": "2019-01-14T15:40:04Z"
+		},
+		{
+			"checksumSHA1": "mihWown+8cKdjNGuYww9jowbjIs=",
+			"path": "github.com/tidwall/match",
+			"revision": "33827db735fff6510490d69a8622612558a557ed",
+			"revisionTime": "2018-12-10T10:08:38Z"
 		},
 		{
 			"checksumSHA1": "AUa3Cp/d07Ou1to7ORdEruPrZPQ=",
