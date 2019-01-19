@@ -1,9 +1,11 @@
 package handler
 
 import (
+	"context"
 	"github.com/golang/glog"
 	"github.com/labstack/echo"
 	"github.com/wcake/go/jutils"
+	"go.etcd.io/etcd/clientv3"
 	"net/http"
 	"strconv"
 	"time"
@@ -22,7 +24,9 @@ import (
 
 type Handler struct {
 	//	DB *Mongo
-	CON *int
+	//CON *int
+	ECon *clientv3.Client
+	ECtx context.Context
 }
 
 func (h *Handler) GetHostName(c echo.Context) error {
@@ -50,4 +54,30 @@ func (h *Handler) GetToSleepInf(c echo.Context) error {
 	time.Sleep(time.Duration(ist) * time.Second)
 
 	return c.JSON(http.StatusOK, sleeptime)
+}
+
+func (h *Handler) GetStore(c echo.Context) error {
+	timeout := 5 * time.Second
+	ctx, cancel := context.WithTimeout(context.Background(), timeout)
+	Value := c.Request().Header.Get("key")
+	glog.Info("get from header", Value)
+	if data, err := h.ECon.Get(ctx, "foo6"); err != nil {
+		glog.Error(err)
+	} else {
+		glog.Info("here is the data we get", data)
+		glog.Info(string(data.Kvs[0].Key), string(data.Kvs[0].Value))
+		glog.Info("get size", data.Count)
+	}
+	cancel()
+	return c.JSON(http.StatusOK, "")
+}
+func (h *Handler) UploadStore(c echo.Context) error {
+	timeout := 5 * time.Second
+	ctx, cancel := context.WithTimeout(context.Background(), timeout)
+	if _, err := h.ECon.Put(ctx, "foo6", "bar6"); err != nil {
+		glog.Info(err)
+	}
+	glog.Info("upload data stored")
+	cancel()
+	return c.JSON(http.StatusOK, "")
 }
