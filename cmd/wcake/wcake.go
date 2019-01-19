@@ -47,12 +47,12 @@ func main() {
 		fmt.Println(err)
 	}
 	fmt.Println("connected......")
-	_, err = cli.Put(ctx, "foo3", "bar3")
-	data, _ := cli.Get(ctx, "foo3")
-	fmt.Println(string(data.Kvs[0].Key), string(data.Kvs[0].Value))
-	fmt.Println("get size", data.Count)
+	//_, err = cli.Put(ctx, "foo3", "bar3")
+	//data, _ := cli.Get(ctx, "foo3")
+	//fmt.Println(string(data.Kvs[0].Key), string(data.Kvs[0].Value))
+	//fmt.Println("get size", data.Count)
 
-	defer cli.Close() // make sure to close the client
+	//defer cli.Close() // make sure to close the client
 
 	h := &handler.Handler{ECon: cli, ECtx: ctx}
 
@@ -63,6 +63,7 @@ func main() {
 	e.GET("/sleepinf", h.GetToSleepInf)
 	e.GET("/getstore", h.GetStore)
 	e.GET("/uploadstore", h.UploadStore)
+	e.POST("/buy", h.Buy)
 	e.Logger.Fatal(e.Start(":8000"))
 
 	glog.Flush()
