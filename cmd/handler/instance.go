@@ -121,3 +121,35 @@ func (h *Handler) GetBuyID(c echo.Context) error {
 	}
 	return c.JSON(http.StatusOK, buy)
 }
+
+func (h *Handler) TestStoreGet(c echo.Context) error {
+	//var body []byte
+	if body, err := ioutil.ReadAll(c.Request().Body); err != nil {
+		glog.Error(err)
+	} else {
+		timeout := 5 * time.Second
+		ctx, cancel := context.WithTimeout(context.Background(), timeout)
+		if _, err := h.ECon.Put(ctx, "testbuy-id", string(body)); err != nil {
+			glog.Error(err)
+		}
+		cancel()
+	}
+	glog.Info("upload data stored")
+
+	timeout := 5 * time.Second
+	ctx, cancel := context.WithTimeout(context.Background(), timeout)
+	if data, err := h.ECon.Get(ctx, "testbuy-id"); err != nil {
+		glog.Error(err)
+	} else {
+		glog.Info(data)
+		glog.Info("key:", string(data.Kvs[0].Key))
+		glog.Info("value:", string(data.Kvs[0].Value))
+		gjsonValue := gjson.ParseBytes(data.Kvs[0].Value)
+		userid := gjsonValue.Get("buy.userid")
+		glog.Info("pase result and get userid from gjson:", userid)
+	}
+	cancel()
+
+	return c.JSON(http.StatusOK, "")
+
+}
