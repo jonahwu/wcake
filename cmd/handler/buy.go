@@ -2,6 +2,7 @@ package handler
 
 import (
 	//"github.com/golang/glog"
+	"github.com/tidwall/gjson"
 	"github.com/wcake/go/jutils"
 	"time"
 )
@@ -17,4 +18,8 @@ func getBuyID() string {
 
 func getBuyTime() string {
 	return time.Now().Format("20060102150405")
+}
+
+func ParseBuyID(body []byte) {
+	gjson.Get(string(body), "buy.buyinfo.buyid")
 }

@@ -86,6 +86,18 @@ func (h *Handler) UploadStore(c echo.Context) error {
 }
 
 func (h *Handler) Buy(c echo.Context) error {
+	//var body []byte
+	if body, err := ioutil.ReadAll(c.Request().Body); err != nil {
+		glog.Error(err)
+	} else {
+		glog.Info(string(body))
+		glog.Info("show userid:", gjson.Get(string(body), "buy.userinfo.userid"))
+		glog.Info("show buyid:", gjson.Get(string(body), "buy.buyinfo.buyid"))
+
+	}
+	return c.JSON(http.StatusOK, "")
+}
+func (h *Handler) PreBuy(c echo.Context) error {
 
 	//sleeptime := c.Request().Header.Get("SLEEPTIME")
 	var body []byte
