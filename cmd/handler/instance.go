@@ -86,6 +86,14 @@ func (h *Handler) UploadStore(c echo.Context) error {
 }
 
 func (h *Handler) GetBuy(c echo.Context) error {
+	if body, err := ioutil.ReadAll(c.Request().Body); err != nil {
+		glog.Error("something wrong")
+	} else {
+		buyid := gjson.Get(string(body), "buyid").String()
+		buyvalue := h.GetEtcdKV(buyid)
+		glog.Info("show buyvalue:", buyvalue)
+		return c.JSON(http.StatusOK, buyvalue)
+	}
 	return c.JSON(http.StatusOK, "")
 }
 func (h *Handler) Buy(c echo.Context) error {
@@ -94,8 +102,14 @@ func (h *Handler) Buy(c echo.Context) error {
 		glog.Error(err)
 	} else {
 		glog.Info(string(body))
-		glog.Info("show userid:", gjson.Get(string(body), "buy.userinfo.userid"))
-		glog.Info("show buyid:", gjson.Get(string(body), "buy.buyinfo.buyid"))
+		userid := gjson.Get(string(body), "buy.userinfo.userid").String()
+		glog.Info("show userid:", userid)
+		buyid := gjson.Get(string(body), "buy.buyinfo.buyid").String()
+		glog.Info("show buyid:", buyid)
+		buyidK := jutils.CombineString("buyid-", buyid)
+		h.StoreEtcdKV(buyidK, buyid)
+		h.StoreEtcdKV(buyid, string(body))
+		return c.JSON(http.StatusOK, buyid)
 
 	}
 	return c.JSON(http.StatusOK, "")
